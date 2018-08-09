@@ -1,0 +1,92 @@
+
+
+    <-----------------------------接口用法------------------------------->
+  //注册
+    @FormUrlEncoded
+    @POST("app/register")
+    Observable<LoginBean> register(@FieldMap Map<String, String> params);
+
+    //获取验证码
+    @POST("app/sendCode")
+    Observable<EvaluteBean> getSendcode(@Query("telephone") String params);
+
+    //登陆
+    @FormUrlEncoded
+    @POST("app/login")
+    Observable<LoginBean> login(@FieldMap Map<String, String> params, @Query("type") int type);
+
+
+    @GET("api/mp/chatted/{tel}")
+    Observable<ChattedBean> chatted(@Path("tel") String tel);
+
+    //1----1
+    @GET("api/pkg")
+    Observable<StockPkgBean> selectpkg(@Query("name") String params
+            , @Query("currpage") int currpage);
+     //上传图片
+    @Multipart
+    @POST("api/common/upload")
+    Observable<EvaluteBeans> uploadImage(@Query("telephone") String telephone,
+                                         @Query("orderId") String orderId,
+                                         @Part List<MultipartBody.Part> file);
+
+
+    <-------------------------------接口请求方法----------------------------->
+        /*//注册
+        public void register(Map<String, String> map, Observer<LoginBean> observer) {
+            getInstance().mApiService.register(map).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer);
+        }
+        //登陆
+        public void login(Map<String, String> map,int type, Observer<LoginBean> observer) {
+            getInstance().mApiService.login(map,type).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer);
+        }
+           //获取验证码
+           public void getSendcode(String id, Observer<EvaluteBean> observer) {
+               getInstance().mApiService.getSendcode(id).subscribeOn(Schedulers.io())
+                       .observeOn(AndroidSchedulers.mainThread())
+                       .subscribe(observer);
+           }
+
+            //上传图片
+        public void chatImage(String docTel, String from, String tid, List<MultipartBody.Part> file, Observer<EvaluteBean> observer) {
+            getInstance().mApiService.chatImage(docTel, from, tid, file).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer);
+        }
+
+
+        /*
+        上传图片的方法
+        private void sendPictures(String paht) {
+
+                List<MultipartBody.Part> parts = new ArrayList<>();
+                File file = new File(paht);
+                //表单类型;
+                Logger.e(file.getPath() + "==========lujing========-");
+                RequestBody imageBody = RequestBody.create(MediaType.parse("image/*"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), imageBody);
+                parts.add(body);
+
+
+
+                  //壓縮图片
+                  File newFile = CompressHelper.getDefault(this).compressToFile(file);
+                */
+
+       <-------------------------------进度框的使用方法----------------------------->
+       promptDialog = new PromptDialog(this);
+       promptDialog.showLoading("正在登录");
+
+       /********************消息提示框*************/
+       promptDialog.showSuccess("登陆成功");
+       promptDialog.showError("登录失败");
+       promptDialog.showWarn("注意");
+       promptDialog.showInfo("成功了");
+       promptDialog.showCustom(R.mipmap.ic_launcher, "自定义图标的");
+       promptDialog.dismiss();
+       promptDialog.dismissImmediately();
+       //具体方法详情：：：： https://github.com/limxing/Android-PromptDialog

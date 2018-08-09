@@ -14,7 +14,7 @@ import android.view.ViewGroup;
  * author:zhuang
  * ===================================
  */
-public abstract class BeaseFragment extends Fragment implements View.OnClickListener{
+public abstract class BaseFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

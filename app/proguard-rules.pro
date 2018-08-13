@@ -176,6 +176,7 @@
 -keep public class com.google.gson.** {public private protected *;}
 -keepattributes Signature
 -keepattributes *Annotation*
+
 # 将下面替换成自己的实体类 (一些请求数据的Bean类)
 -keep class com.frame.frame.bean.** { *; }
 
@@ -224,3 +225,11 @@
     public static *** d(...);
     public static *** e(...);
    }
+#数据库混淆
+-keep class org.litepal.** {
+    *;
+}
+
+-keep class * extends org.litepal.crud.LitePalSupport{
+    *;
+}

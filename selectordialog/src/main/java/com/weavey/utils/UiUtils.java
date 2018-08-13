@@ -5,7 +5,6 @@ import android.content.Context;
 /**
  * create by Weavey
  * on date 2016-01-06
- * TODO
  */
 
 public class UiUtils {

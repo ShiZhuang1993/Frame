@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.frame.frame.base.BaseActivity;
+import com.frame.frame.bean.Bean;
+
+import org.litepal.LitePal;
+
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 

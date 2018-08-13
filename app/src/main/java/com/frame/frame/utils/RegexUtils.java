@@ -198,7 +198,6 @@ public class RegexUtils {
         try {
             result = new String(str.getBytes("GBK"), "GBK");
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;

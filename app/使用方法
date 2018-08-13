@@ -90,3 +90,55 @@
        promptDialog.dismiss();
        promptDialog.dismissImmediately();
        //具体方法详情：：：： https://github.com/limxing/Android-PromptDialog
+
+
+
+       //数据库 使用说明：
+       //建表必须继承LitePalSupport
+      public class Bean extends LitePalSupport {
+           //运用注解来为字段添加index标签
+           //name是唯一的，且默认值为unknown
+           @Column(unique = true, defaultValue = "unknown")
+           private String name;
+           //忽略即是不在数据库中创建该属性对应的字段
+           @Column(ignore = true)
+           private String sex;
+           //不为空
+           @Column(nullable = false)
+           private String ids;
+
+
+          /*   //添加数据
+                Bean bean = new Bean();
+                bean.setName("张三");
+                bean.setIds("054");
+                bean.save();
+
+              //删除数据
+                //删除数据库中bean表的所有记录
+                LitePal.deleteAll(Bean.class);
+                //删除数据库Bean表中id为1的记录
+                LitePal.delete(Bean.class,1);
+                //删除数据库Bean表中duration大于3500的记录
+                LitePal.deleteAll(Bean.class, "ids > ?" , "2");
+
+                //修改数据
+                //第一种方法
+                bean.setName("李四");
+                bean.save();
+                //第二种方法
+                bean.setName("wangwu");
+                bean.update(1);
+                //第三种方法
+                bean.setName("hjkllll");
+                //更新所有name为sdfdf的记录,将name字段设为hjkllll
+                bean.updateAll("name=?","sdfdf");
+
+                //查询数据
+                //查找movie表的所有记录
+                List<Bean> allMovies = LitePal.findAll(Bean.class);
+                Log.e("-=============", allMovies.toString());
+                //查找movie表id为1的记录
+                Bean movie = LitePal.find(Bean.class,1);
+                //查找name为2Diots的记录,条件查询，以时长作排序
+                List<Bean> movies = LitePal.where("name = ?", "2Diots").order("duration").find(Bean.class);*/

@@ -52,7 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onDestroy() {
         super.onDestroy();
         UserCentre.getInstance().destroy();
-        RetrofitUtil.getInstance().destroy();
+        //RetrofitUtil.getInstance().destroy(); TODO
         DownloadUtils.getDownloadUtils().destroy();
     }
 

@@ -93,8 +93,9 @@ public class PersistentCookieStore {
 
     public List<Cookie> get(HttpUrl url) {
         ArrayList<Cookie> ret = new ArrayList<>();
-        if (cookies.containsKey(url.host()))
+        if (cookies.containsKey(url.host())) {
             ret.addAll(cookies.get(url.host()).values());
+        }
         System.out.println("cookie = size "+ cookies.size());
 
         return ret;
@@ -129,8 +130,9 @@ public class PersistentCookieStore {
 
     public List<Cookie> getCookies() {
         ArrayList<Cookie> ret = new ArrayList<>();
-        for (String key : cookies.keySet())
+        for (String key : cookies.keySet()) {
             ret.addAll(cookies.get(key).values());
+        }
 
         return ret;
     }
@@ -142,8 +144,9 @@ public class PersistentCookieStore {
      * @return 序列化之后的string
      */
     protected String encodeCookie(SerializableOkHttpCookies cookie) {
-        if (cookie == null)
+        if (cookie == null) {
             return null;
+        }
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(os);

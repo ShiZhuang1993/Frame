@@ -103,9 +103,11 @@ public class NormalSelectionDialog {
         if (datas.size() == 1) {
 
             Button button = getButton(datas.get(0), 0);
-            if (mBuilder.getTitleVisible())
+            if (mBuilder.getTitleVisible()) {
                 button.setBackgroundResource(R.drawable.selector_widget_actiondialog_bottom);
-            else button.setBackgroundResource(R.drawable.selector_widget_actiondialog_single);
+            } else {
+                button.setBackgroundResource(R.drawable.selector_widget_actiondialog_single);
+            }
 
             linearLayout.addView(button);
 
@@ -117,12 +119,13 @@ public class NormalSelectionDialog {
                 if (!mBuilder.getTitleVisible() && i == 0) {
                     button.setBackgroundResource(R.drawable.selector_widget_actiondialog_top);
                 } else {
-                    if (i != datas.size() - 1)
+                    if (i != datas.size() - 1) {
                         button.setBackgroundResource(R.drawable
                                 .selector_widget_actiondialog_middle);
-                    else
+                    } else {
                         button.setBackgroundResource(R.drawable
                                 .selector_widget_actiondialog_bottom);
+                    }
                 }
                 linearLayout.addView(button);
             }

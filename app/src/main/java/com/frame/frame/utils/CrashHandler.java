@@ -30,7 +30,7 @@ import java.util.Map;
  * ===================================
  */
 
-public class CrashHandler implements UncaughtExceptionHandler {  
+public class CrashHandler implements UncaughtExceptionHandler {
       
     public static final String TAG = "CrashHandler";  
       
@@ -117,13 +117,13 @@ public class CrashHandler implements UncaughtExceptionHandler {
      * 收集设备参数信息 
      * @param ctx 
      */  
-    public void collectDeviceInfo(Context ctx) {  
+    public void collectDeviceInfo(Context ctx) {
         try {  
             PackageManager pm = ctx.getPackageManager();  
             PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);  
             if (pi != null) {  
                 String versionName = pi.versionName == null ? "null" : pi.versionName;  
-                String versionCode = pi.versionCode + "";  
+                String versionCode = pi.versionCode + "";
                 infos.put("versionName", versionName);  
                 infos.put("versionCode", versionCode);  
             }  

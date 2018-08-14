@@ -16,6 +16,7 @@ import android.net.Uri;
 public class UpdataBroadcastReceiver extends BroadcastReceiver {
 
     @SuppressLint("NewApi")
+    @Override
     public void onReceive(Context context, Intent intent) {
         long myDwonloadID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
         SharedPreferences sPreferences = context.getSharedPreferences("downloadcomplete", 0);

@@ -7,10 +7,12 @@ import com.frame.frame.url.APPUrl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,9 +30,45 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitUtil {
     public static final int DEFAULT_TIMEOUT = 1000;
+    private static RetrofitUtil mInstance;
     private Retrofit mRetrofit;
     private APIService mApiService;
-    private static RetrofitUtil mInstance;
+    /**
+     * Okhttp拦截器
+     */
+    private Interceptor cacheNetInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            boolean networkAvailable = NetworkUtils.isNetworkAvailable(AppInit.getContext());
+            if (networkAvailable) {
+                request = request.newBuilder()
+                        .cacheControl(CacheControl.FORCE_NETWORK)
+                        .build();
+            } else {
+                request = request.newBuilder()
+                        .cacheControl(CacheControl.FORCE_CACHE)
+                        .build();
+            }
+            Response response = chain.proceed(request);
+            if (networkAvailable) {
+                response = response.newBuilder()
+                        .removeHeader("Pragma")
+                        // 有网络时 设置缓存超时时间1个小时
+                        .header("Cache-Control", "public, max-age=" + 60 * 60)
+                        .build();
+
+            } else {
+                response = response.newBuilder()
+                        .removeHeader("Pragma")
+                        // 无网络时，设置超时为1周
+                        .header("Cache-Control", "public, only-if-cached, max-stale=" + 7 * 24 * 60 * 60)
+                        .build();
+            }
+            return response;
+        }
+
+    };
 
     /**
      * 私有构造方法
@@ -41,9 +79,50 @@ public class RetrofitUtil {
                 .cookieJar(new CookiesManager(AppInit.getContext()))
                 .cache(new Cache(new File(AppInit.getContext().getExternalCacheDir(),
                         "app"), 5 * 2024 * 1024))
-                .addInterceptor(cacheNetInterceptor)
                 .addNetworkInterceptor(cacheNetInterceptor)
-                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+        /*        .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        //获取request
+                        Request request = chain.request();
+                        //获取request的创建者builder
+                        Request.Builder builder = request.newBuilder();
+                        //从request中获取headers，通过给定的键url_name
+                        List<String> headerValues = request.headers("urlname");
+                        if (headerValues != null && headerValues.size() > 0) {
+                            //如果有这个header，先将配置的header删除，因此header仅用作app和okhttp之间使用
+                            builder.removeHeader("urlname");
+
+                            //匹配获得新的BaseUrl
+                            String headerValue = headerValues.get(0);
+                            HttpUrl newBaseUrl = null;
+                            if ("kangso".equals(headerValue)) {
+                                newBaseUrl = HttpUrl.parse(APPUrl.KANG_SO);
+                            } else if ("search".equals(headerValue)) {
+                                newBaseUrl = HttpUrl.parse(APPUrl.KANGSO_URL);
+                            } else if ("assistant".equals(headerValue)) {
+                                newBaseUrl = HttpUrl.parse(APPUrl.KANGSO_DIAGNOSIS_ASSISTANT);
+                            }
+
+                            //从request中获取原有的HttpUrl实例oldHttpUrl
+                            HttpUrl oldHttpUrl = request.url();
+                            //重建新的HttpUrl，修改需要修改的url部分
+                            HttpUrl newFullUrl = oldHttpUrl
+                                    .newBuilder()
+                                    .scheme(newBaseUrl.scheme())
+                                    .host(newBaseUrl.host())
+                                    .port(newBaseUrl.port())
+                                    .build();
+
+                            //重建这个request，通过builder.url(newFullUrl).build()；
+                            //然后返回一个response至此结束修改
+                            return chain.proceed(builder.url(newFullUrl).build());
+                        } else {
+                            return chain.proceed(request);
+                        }
+                    }
+                }).build()*/;
 
         mRetrofit = new Retrofit.Builder()
                 .client(builder.build())
@@ -63,39 +142,6 @@ public class RetrofitUtil {
         return mInstance;
     }
 
-    /**
-     * Okhttp拦截器
-     */
-    private Interceptor cacheNetInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            if (NetworkUtils.isNetworkAvailable(AppInit.getContext())) {
-                Response response = chain.proceed(request);
-                // read from cache for 0 ratingbar_view  有网络不会使用缓存数据
-                int maxAge = 10;
-                String cacheControl = request.cacheControl().toString();
-                return response.newBuilder()
-                        .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .build();
-            } else {
-                //无网络时强制使用缓存数据
-                request = request.newBuilder()
-                        .cacheControl(CacheControl.FORCE_CACHE)
-                        .build();
-                Response response = chain.proceed(request);
-                int maxStale = 60 * 60 * 24 * 3;
-                return response.newBuilder()
-                        .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .build();
-            }
-        }
-
-    };
     //释放资源
     public void destroy() {
         mApiService = null;

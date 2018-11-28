@@ -14,10 +14,7 @@ import java.net.URL;
 import java.util.Enumeration;
 
 /**
- * ===================================
- * describe:网络判讀那
- * author:zhuang
- * ===================================
+ * 網路判讀
  */
 public class NetworkUtils {
 
@@ -37,19 +34,17 @@ public class NetworkUtils {
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getApplicationContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
-        if (null == manager) {
+        if (null == manager)
             return false;
-        }
         NetworkInfo info = manager.getActiveNetworkInfo();
-        if (null == info || !info.isAvailable()) {
+        if (null == info || !info.isAvailable())
             return false;
-        }
         return true;
     }
 
     /**
      * getLocalIpAddress
-     *
+     *  获取本地IP
      * @return
      */
     public static String getLocalIpAddress() {
@@ -84,11 +79,10 @@ public class NetworkUtils {
                 NetworkInfo networkinfo = connectivity.getActiveNetworkInfo();
                 if (networkinfo != null) {
                     if (networkinfo.isAvailable() && networkinfo.isConnected()) {
-                        if (!connectionNetwork()) {
+                        if (!connectionNetwork())
                             return NET_CNNT_BAIDU_TIMEOUT;
-                        } else {
+                        else
                             return NET_CNNT_BAIDU_OK;
-                        }
                     } else {
                         return NET_NOT_PREPARE;
                     }
@@ -126,7 +120,7 @@ public class NetworkUtils {
 
     /**
      * check is3G
-     *
+     *  判读是否3G
      * @param context
      * @return boolean
      */
@@ -143,7 +137,7 @@ public class NetworkUtils {
 
     /**
      * isWifi
-     *
+     *  判断是否WiFi
      * @param context
      * @return boolean
      */
@@ -160,7 +154,7 @@ public class NetworkUtils {
 
     /**
      * is2G
-     *
+     *判断是否2G
      * @param context
      * @return boolean
      */
@@ -179,6 +173,7 @@ public class NetworkUtils {
 
     /**
      * is wifi on
+     * 判断是否启动wifi
      */
     public static boolean isWifiEnabled(Context context) {
         ConnectivityManager mgrConn = (ConnectivityManager) context

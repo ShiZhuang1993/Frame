@@ -142,3 +142,59 @@
                 Bean movie = LitePal.find(Bean.class,1);
                 //查找name为2Diots的记录,条件查询，以时长作排序
                 List<Bean> movies = LitePal.where("name = ?", "2Diots").order("duration").find(Bean.class);*/
+
+
+
+
+                //底部彈窗
+                private void bottomWindow() {
+
+                    bottomShareMenu = new BottomShareMenu(this) {
+
+                        private RecyclerView recyclerView;
+                        private BottomWindowAdapter adapter;
+                        private Button bt_bittomwindow_commit;
+
+                        @Override
+                        protected View onBindView() {
+                            View inflate = getLayoutInflater().inflate(R.layout.bottomwindow_dialog, null);
+                            recyclerView = inflate.findViewById(R.id.rl_bittomwindow);
+                            bt_bittomwindow_commit = inflate.findViewById(R.id.bt_bittomwindow_commit);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(DiagnosisAssistantAcyivity.this));
+                            return inflate;
+                        }
+
+                        @Override
+                        protected void setData() {
+                            adapter = new BottomWindowAdapter(R.layout.bottomwindow_item,
+                                    windowId);
+                            adapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+                            recyclerView.setAdapter(adapter);
+                            adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                                @Override
+                                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                                    switch (view.getId()) {
+                                        case R.id.im_bottomwindow_delete:
+                                            windowId.remove(position);
+                                            hopId.remove(position);
+                                            if (index == 0) {
+                                                assistantSelectOne(et_diagnosisassistant_content.getText().toString().trim());
+                                            } else {
+                                                assistantSelectTwo(et_diagnosisassistant_content2.getText().toString().trim());
+                                            }
+                                            tv_relatedproducts_sum.setText("已选（" + windowId.size() + "）");
+                                            adapter.notifyItemRemoved(position);
+                                            break;
+                                    }
+                                }
+                            });
+                            bt_bittomwindow_commit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    bottomShareMenu.dismiss();
+                                }
+                            });
+                        }
+
+                    };
+                }

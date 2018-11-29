@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.frame.frame.R;
 import com.wevey.selector.dialog.DialogInterface;
+import com.wevey.selector.dialog.MDAlertDialog;
 import com.wevey.selector.dialog.MDEditDialog;
 import com.wevey.selector.dialog.NormalAlertDialog;
 import com.wevey.selector.dialog.NormalSelectionDialog;
@@ -84,4 +85,80 @@ public class SelectDialogUtils {
 
 
     }
+
+    /**
+     * <p>
+     * 右侧双键对话框
+     *
+     * @param context
+     */
+    public static void rightDoubleBondDialog(Context context, String title, String changeLog, String leftbt, String rightbt,
+                                             DialogInterface.OnLeftAndRightClickListener dialog) {
+        new MDAlertDialog.Builder(context)
+                .setHeight(0.21f)  //屏幕高度*0.21
+                .setWidth(0.7f)  //屏幕宽度*0.7
+                .setTitleVisible(true)
+                .setTitleText(title)
+                .setTitleTextColor(R.color.black_light)
+                .setContentText(changeLog)
+                .setContentTextColor(R.color.black_light)
+                .setLeftButtonText(leftbt)
+                .setLeftButtonTextColor(R.color.gray)
+                .setRightButtonText(rightbt)
+                .setRightButtonTextColor(R.color.black_light)
+                .setTitleTextSize(16)
+                .setContentTextSize(14)
+                .setButtonTextSize(14)
+                .setOnclickListener(dialog)
+                .setCanceledOnTouchOutside(false)
+                .build()
+                .show();
+    }
+
+    /**
+     * <p>
+     * 单键对话框
+     *
+     * @param context
+     */
+    public static void singleBondDialog(Context context, String title, String changeLog, String singlebt,
+                                        DialogInterface.OnSingleClickListener dialog) {
+        new NormalAlertDialog.Builder(context).setHeight(0.23f)  //屏幕高度*0.23
+                .setWidth(0.65f)  //屏幕宽度*0.65
+                .setTitleVisible(true).setTitleText(title)
+                .setTitleTextColor(R.color.colorPrimary)
+                .setContentText(changeLog)
+                .setContentTextColor(R.color.colorPrimaryDark)
+                .setSingleMode(true).setSingleButtonText(singlebt)
+                .setSingleButtonTextColor(R.color.colorAccent)
+                .setCanceledOnTouchOutside(true)
+                .setSingleListener(dialog)
+                .setCanceledOnTouchOutside(false)
+                .build()
+                .show();
+    }
+
+    /**
+     * <p>
+     * 双键对话框
+     *
+     * @param context
+     */
+    public static void doubleBondDialog(Context context, String title, String changeLog, String leftbt, String rightbt,
+                                        DialogInterface.OnLeftAndRightClickListener dialog) {
+        new NormalAlertDialog.Builder(context).setTitleVisible(false)
+                .setTitleText(title)
+                .setTitleTextColor(R.color.black_light)
+                .setContentText(changeLog)
+                .setContentTextColor(R.color.black_light)
+                .setLeftButtonText(leftbt)
+                .setLeftButtonTextColor(R.color.gray)
+                .setRightButtonText(rightbt)
+                .setRightButtonTextColor(R.color.black_light)
+                .setOnclickListener(dialog)
+                .setCanceledOnTouchOutside(false)
+                .build()
+                .show();
+    }
+
 }

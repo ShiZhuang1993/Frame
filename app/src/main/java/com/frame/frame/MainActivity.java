@@ -4,23 +4,18 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.frame.frame.base.BaseActivity;
-import com.frame.frame.bean.Bean;
-
-import org.litepal.LitePal;
-
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
     }
 
     @Override
     protected void initView() {
-
+        setContentView(R.layout.activity_main);
     }
 
     @Override

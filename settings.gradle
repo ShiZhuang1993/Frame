@@ -1,1 +1,1 @@
-include ':app',':selectordialog'
+include ':app',':selectordialog','qrcodelib'

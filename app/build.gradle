@@ -11,6 +11,7 @@ android {
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner rootProject.ext.android.testInstrumentationRunner
         flavorDimensions "versionCode"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -79,7 +80,9 @@ dependencies {
     //进度对话框
     implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
     //对话框lib
-    implementation project(path: ':selectordialog')
+    implementation project(':selectordialog')
+    //扫描二维码
+    implementation project(':qrcodelib')
     //数据库
     implementation 'org.litepal.android:core:2.0.0'
     //查看数据库神器（PS:手机和电脑的网段必须一致，然后把logcat调到debug模式会有一个链接）

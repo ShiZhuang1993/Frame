@@ -81,7 +81,8 @@ public class RetrofitUtil {
                         "app"), 5 * 2024 * 1024))
                 .addNetworkInterceptor(cacheNetInterceptor)
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-        /*        .addInterceptor(new Interceptor() {
+                //多个服务器时启用这个方法
+               /* .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         //获取request
@@ -98,13 +99,12 @@ public class RetrofitUtil {
                             String headerValue = headerValues.get(0);
                             HttpUrl newBaseUrl = null;
                             if ("kangso".equals(headerValue)) {
-                                newBaseUrl = HttpUrl.parse(APPUrl.KANG_SO);
+                                newBaseUrl = HttpUrl.parse(APPUrl.URL);
                             } else if ("search".equals(headerValue)) {
                                 newBaseUrl = HttpUrl.parse(APPUrl.KANGSO_URL);
                             } else if ("assistant".equals(headerValue)) {
                                 newBaseUrl = HttpUrl.parse(APPUrl.KANGSO_DIAGNOSIS_ASSISTANT);
                             }
-
                             //从request中获取原有的HttpUrl实例oldHttpUrl
                             HttpUrl oldHttpUrl = request.url();
                             //重建新的HttpUrl，修改需要修改的url部分
@@ -126,6 +126,7 @@ public class RetrofitUtil {
 
         mRetrofit = new Retrofit.Builder()
                 .client(builder.build())
+                //单个服务器时直接用这个就可以，（ps:不管单个还是多个的时候这里必须有一个默认的服务器地址）
                 .baseUrl(APPUrl.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
